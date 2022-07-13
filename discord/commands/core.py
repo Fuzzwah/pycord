@@ -902,7 +902,11 @@ class SlashCommand(ApplicationCommand):
                     result = await result
 
                 choices = [o if isinstance(o, OptionChoice) else OptionChoice(o) for o in result][:25]
-                return await ctx.interaction.response.send_autocomplete_result(choices=choices)
+                try:
+                    return await ctx.interaction.response.send_autocomplete_result(choices=choices)
+                except Exception as exc:
+                    print(exc)
+                    pass
 
     def copy(self):
         """Creates a copy of this command.
