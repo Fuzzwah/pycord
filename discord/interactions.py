@@ -33,7 +33,7 @@ from typing import TYPE_CHECKING, Any, Coroutine, Dict, List, Optional, Tuple, U
 from . import utils
 from .channel import ChannelType, PartialMessageable
 from .enums import InteractionResponseType, InteractionType, try_enum
-from .errors import ClientException, InteractionResponded, InvalidArgument
+from .errors import ClientException, InteractionResponded, InvalidArgument, NotFound
 from .file import File
 from .member import Member
 from .message import Attachment, Message
@@ -385,14 +385,17 @@ class Interaction:
             previous_allowed_mentions=previous_mentions,
         )
         adapter = async_context.get()
-        data = await adapter.edit_original_interaction_response(
-            self.application_id,
-            self.token,
-            session=self._session,
-            payload=params.payload,
-            multipart=params.multipart,
-            files=params.files,
-        )
+        try:
+            data = await adapter.edit_original_interaction_response(
+                self.application_id,
+                self.token,
+                session=self._session,
+                payload=params.payload,
+                multipart=params.multipart,
+                files=params.files,
+            )
+        except NotFound as exc:
+            return
 
         # The message channel types should always match
         message = InteractionMessage(state=self._state, channel=self.channel, data=data)  # type: ignore
