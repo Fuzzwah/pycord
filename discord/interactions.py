@@ -33,7 +33,7 @@ from typing import TYPE_CHECKING, Any, Coroutine, Dict, List, Optional, Tuple, U
 from . import utils
 from .channel import ChannelType, PartialMessageable
 from .enums import InteractionResponseType, InteractionType, try_enum
-from .errors import ClientException, InteractionResponded, InvalidArgument
+from .errors import ClientException, InteractionResponded, InvalidArgument, NotFound
 from .file import File
 from .member import Member
 from .message import Attachment, Message
@@ -887,15 +887,18 @@ class InteractionResponse:
         payload = {"choices": [c.to_dict() for c in choices]}
 
         adapter = async_context.get()
-        await self._locked_response(
-            adapter.create_interaction_response(
-                parent.id,
-                parent.token,
-                session=parent._session,
-                type=InteractionResponseType.auto_complete_result.value,
-                data=payload,
+        try:
+            await self._locked_response(
+                adapter.create_interaction_response(
+                    parent.id,
+                    parent.token,
+                    session=parent._session,
+                    type=InteractionResponseType.auto_complete_result.value,
+                    data=payload,
+                )
             )
-        )
+        except NotFound:
+            pass
 
         self._responded = True
 
