@@ -28,6 +28,7 @@ from __future__ import annotations
 import asyncio
 import datetime
 import functools
+import traceback
 import inspect
 import re
 import types
@@ -905,8 +906,8 @@ class SlashCommand(ApplicationCommand):
                 try:
                     return await ctx.interaction.response.send_autocomplete_result(choices=choices)
                 except Exception as exc:
-                    print(exc)
-                    return
+                    traceback.print_exc()
+                    pass
 
     def copy(self):
         """Creates a copy of this command.
