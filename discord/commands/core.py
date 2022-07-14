@@ -28,7 +28,6 @@ from __future__ import annotations
 import asyncio
 import datetime
 import functools
-import traceback
 import inspect
 import re
 import types
@@ -57,7 +56,6 @@ from ..errors import (
     CheckFailure,
     ClientException,
     ValidationError,
-    NotFound,
 )
 from ..member import Member
 from ..message import Attachment, Message
