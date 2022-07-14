@@ -887,18 +887,15 @@ class InteractionResponse:
         payload = {"choices": [c.to_dict() for c in choices]}
 
         adapter = async_context.get()
-        try:
-            await self._locked_response(
-                adapter.create_interaction_response(
-                    parent.id,
-                    parent.token,
-                    session=parent._session,
-                    type=InteractionResponseType.auto_complete_result.value,
-                    data=payload,
-                )
+        await self._locked_response(
+            adapter.create_interaction_response(
+                parent.id,
+                parent.token,
+                session=parent._session,
+                type=InteractionResponseType.auto_complete_result.value,
+                data=payload,
             )
-        except NotFound:
-            pass
+        )
 
         self._responded = True
 

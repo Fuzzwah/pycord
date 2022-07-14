@@ -207,8 +207,8 @@ class AsyncWebhookAdapter:
 
                         if response.status == 403:
                             raise Forbidden(response, data)
-                        elif response.status == 404:
-                            raise NotFound(response, data)
+                        #elif response.status == 404:
+                        #    raise NotFound(response, data)
                         else:
                             raise HTTPException(response, data)
 
