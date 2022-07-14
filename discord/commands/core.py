@@ -57,6 +57,7 @@ from ..errors import (
     CheckFailure,
     ClientException,
     ValidationError,
+    NotFound,
 )
 from ..member import Member
 from ..message import Attachment, Message
@@ -905,7 +906,7 @@ class SlashCommand(ApplicationCommand):
                 choices = [o if isinstance(o, OptionChoice) else OptionChoice(o) for o in result][:25]
                 try:
                     return await ctx.interaction.response.send_autocomplete_result(choices=choices)
-                except Exception as exc:
+                except NotFound as exc:
                     traceback.print_exc()
                     pass
 

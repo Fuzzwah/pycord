@@ -33,7 +33,7 @@ from typing import TYPE_CHECKING, Any, Coroutine, Dict, List, Optional, Tuple, U
 from . import utils
 from .channel import ChannelType, PartialMessageable
 from .enums import InteractionResponseType, InteractionType, try_enum
-from .errors import ClientException, InteractionResponded, InvalidArgument, NotFound
+from .errors import ClientException, InteractionResponded, InvalidArgument
 from .file import File
 from .member import Member
 from .message import Attachment, Message
@@ -953,10 +953,7 @@ class InteractionResponse:
             if self.is_done():
                 coro.close()  # cleanup unawaited coroutine
                 raise InteractionResponded(self._parent)
-            try:
-                await coro
-            except NotFound:
-                pass
+            await coro
 
 
 class _InteractionMessageState:
