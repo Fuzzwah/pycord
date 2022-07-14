@@ -186,7 +186,6 @@ class AsyncWebhookAdapter:
                             lock.delay_by(delta)
 
                         if 300 > response.status >= 200:
-                            print(data)
                             return data
 
                         if response.status == 429:
@@ -209,7 +208,7 @@ class AsyncWebhookAdapter:
                         if response.status == 403:
                             raise Forbidden(response, data)
                         elif response.status == 404:
-                            return
+                            return None
                             #raise NotFound(response, data)
                         else:
                             raise HTTPException(response, data)
