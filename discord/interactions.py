@@ -956,12 +956,7 @@ class InteractionResponse:
             if self.is_done():
                 coro.close()  # cleanup unawaited coroutine
                 raise InteractionResponded(self._parent)
-            try:
-                await coro
-            except Exception as exc:
-                print(exc)
-                coro.close()
-                self._responded = True
+            await coro
 
 
 class _InteractionMessageState:
