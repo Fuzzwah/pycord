@@ -906,7 +906,7 @@ class SlashCommand(ApplicationCommand):
                     return await ctx.interaction.response.send_autocomplete_result(choices=choices)
                 except Exception as exc:
                     print(exc)
-                    pass
+                    return
 
     def copy(self):
         """Creates a copy of this command.
